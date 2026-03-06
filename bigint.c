@@ -3,10 +3,19 @@
 #include "math.h"
 #include "stdio.h"
 
+// Display colors for errors and warnings
+#define ERROR "\x1b[31m"
+#define WARNING "\033[33m"
+#define COLOR_RESET "\x1b[0m"
+
 // helper function
 void throwError(const char* err_msg){
-  printf("%s\n", err_msg);
+  printf(ERROR "%s\n" COLOR_RESET, err_msg);
   exit(EXIT_FAILURE);
+}
+
+void throwWarning(const char* warn_msg){
+  printf(WARNING "%s\n" COLOR_RESET, warn_msg);
 }
 
 // BigInt Constructors
@@ -57,7 +66,9 @@ void freeBigInt(BigInt** x){
     free( (*x)->digits );
     free(*x);
     *x = NULL;
+    return;
   }
+  throwWarning("Trying to free NULL pointer - freeBigInt");
 }
 
 // Displaying BigInt (big endian)
