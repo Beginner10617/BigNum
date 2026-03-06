@@ -29,5 +29,5 @@ BigInt* mult(BigInt* x, BigInt* y);
 BigInt* divn(BigInt* x, BigInt* y);
 
 // Destructor
-void freeBigInt(BigInt* x);
+void freeBigInt(BigInt** x);
 #endif

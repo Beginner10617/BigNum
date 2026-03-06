@@ -52,10 +52,12 @@ BigInt* intToBigInt(int x){
 }
 
 // BigInt Destructors
-void freeBigInt(BigInt* x){
-  free(x->digits);
-  free(x);
-  x = NULL;
+void freeBigInt(BigInt** x){
+  if(x && *x){
+    free( (*x)->digits );
+    free(*x);
+    *x = NULL;
+  }
 }
 
 // Displaying BigInt (big endian)
