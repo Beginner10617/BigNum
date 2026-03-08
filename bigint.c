@@ -73,8 +73,11 @@ void freeBigInt(BigInt** x){
 
 // Displaying BigInt (big endian)
 void printBigInt(BigInt* x){
-  for(int i = x->size - 1; i>=0; i--)
+  for(size_t i = x->size - 1; 
+  i>0; i--){
     printf("%u", x->digits[i]);
+    if(i==0) break;
+  }
 }
 
 // BigInt Operations
@@ -97,18 +100,14 @@ BigInt* addn(BigInt* x, BigInt* y){
     sum = carry;
 
     if(y->size > i){
-    //  printf("Adding %u\n", y->digits[i]);
       sum += y->digits[i];
     }
     if(x->size > i){
-    //  printf("Adding %u\n", x->digits[i]);
       sum += x->digits[i];
     }
     
     z->digits[i] = sum % BASE;
     carry = sum / BASE;
-    //printf("%zu %llu %llu\n",
-    //i, sum, carry);
   }
   if(carry){
     z->digits[i] = carry;
@@ -116,4 +115,71 @@ BigInt* addn(BigInt* x, BigInt* y){
   }
   z->size = i;
   return z;
+}
+
+bool eq(BigInt* x, BigInt* y){
+  if(x->size != y->size) return false;
+  for(size_t i=0;
+  i<x->size; i++){
+    if(x->digits[i] !=
+      y->digits[i])
+        return false;
+  }
+  return true;
+}
+
+bool lt(BigInt* x, BigInt* y){
+  if(x->size < y->size) return true;
+  if(x->size > y->size) return false;
+  for(size_t i=x->size-1;
+  i>=0; i--){
+    if(x->digits[i] > y->digits[i])
+      return false;
+    if(x->digits[i] < y->digits[i])
+      return true;
+    if(i==0) break;
+  }
+  return false;
+}
+
+bool gt(BigInt* x, BigInt* y){
+  if(x->size > y->size) return true;
+  if(x->size < y->size) return false;
+  for(size_t i=x->size-1;
+  i>=0; i--){
+    if(x->digits[i] < y->digits[i])
+      return false;
+    if(x->digits[i] > y->digits[i]){
+      return true;}
+    if(i==0) break;
+  }
+  return false;
+}
+
+bool leq(BigInt* x, BigInt* y){
+  if(x->size < y->size) return true;
+  if(x->size > y->size) return false;
+  for(size_t i=x->size-1;
+  i>=0; i--){
+    if(x->digits[i] > y->digits[i])
+      return false;
+    if(x->digits[i] < y->digits[i])
+      return true;
+    if(i==0) break;
+  }
+  return true;
+}
+
+bool geq(BigInt* x, BigInt* y){
+  if(x->size > y->size) return true;
+  if(x->size < y->size) return false;
+  for(size_t i=x->size-1;
+  i>=0; i--){
+    if(x->digits[i] < y->digits[i])
+      return false;
+    if(x->digits[i] > y->digits[i])
+      return true;
+    if(i==0) break;
+  }
+  return true;
 }

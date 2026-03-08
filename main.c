@@ -22,5 +22,11 @@ int main()
   printBigInt(y); printf("\n");
   printf("---------------------\n");
   printBigInt(z); printf("\n");
+  printf("x > y ? %d\n", gt(x,y));
+  printf("x = y ? %d\n", eq(x,y));
+  printf("x < y ? %d\n", lt(x,y));
+  printf("z > y ? %d\n", gt(z,y));
+  printf("z = y ? %d\n", eq(z,y));
+  printf("z < y ? %d\n", lt(z,y));
   return 0;
 }
