@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include "math.h"
 #include "stdio.h"
-
+#include "assert.h"
 // Display colors for errors and warnings
 #define ERROR "\x1b[31m"
 #define WARNING "\033[33m"
@@ -74,7 +74,46 @@ void freeBigInt(BigInt** x){
 // Displaying BigInt (big endian)
 void printBigInt(BigInt* x){
   for(int i = x->size - 1; i>=0; i--)
-    printf("%d\n", x->digits[i]);
+    printf("%u", x->digits[i]);
 }
 
 // BigInt Operations
+BigInt* addn(BigInt* x, BigInt* y){
+  BigInt* z = malloc(sizeof(BigInt));
+  
+  z->cap = x->cap; 
+  if(z->cap < y->cap) z->cap = y->cap;
+  
+  z->cap++;
+  z->digits = malloc(
+  sizeof(digit_t) * z->cap); 
+
+  size_t sz = x->size;
+  if(sz < y->size) sz = y->size;
+  
+  wide_t sum = 0, carry = 0;
+  size_t i;
+  for(i=0; i<sz; i++){
+    sum = carry;
+
+    if(y->size > i){
+    //  printf("Adding %u\n", y->digits[i]);
+      sum += y->digits[i];
+    }
+    if(x->size > i){
+    //  printf("Adding %u\n", x->digits[i]);
+      sum += x->digits[i];
+    }
+    
+    z->digits[i] = sum % BASE;
+    carry = sum / BASE;
+    //printf("%zu %llu %llu\n",
+    //i, sum, carry);
+  }
+  if(carry){
+    z->digits[i] = carry;
+    i++;
+  }
+  z->size = i;
+  return z;
+}
