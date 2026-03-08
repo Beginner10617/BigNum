@@ -74,11 +74,22 @@ void freeBigInt(BigInt** x){
 // Displaying BigInt (big endian)
 void printBigInt(BigInt* x){
   for(size_t i = x->size - 1; 
-  i>0; i--){
+  i>=0; i--){
+    if(i != x->size-1 
+    && x->digits[i]){
+      int lz = floor(log10(x->digits[i]))+1;
+      lz = DIG_LEN - lz;
+      for(int j=0; j<lz; j++)
+        printf("0");
+    }
+    else if(x->digits[i]==0
+    && i!= x->size-1){
+      for(int j=0; j<DIG_LEN-1; j++)
+        printf("0");
+    }
     printf("%u", x->digits[i]);
     if(i==0) break;
   }
-  printf("%u", x->digits[0]);
 }
 
 // BigInt Operations
@@ -102,8 +113,6 @@ BigInt* addn(BigInt* x, BigInt* y){
     xi= (i < x->size)? x->digits[i]:0;
     yi= (i < y->size)? y->digits[i]:0;
     sum = xi + yi + carry;
-    //printf("%llu %llu %llu %llu\n",
-    //xi, yi, carry, sum);
     carry = sum / BASE;
     z->digits[i]= sum%BASE;
   }
@@ -123,7 +132,29 @@ BigInt* subn(BigInt* x, BigInt* y){
       COLOR_RESET);
     exit(EXIT_FAILURE);
   }
-  return NULL;
+  
+  BigInt* z = malloc(sizeof(BigInt));
+  
+  z->cap = x->cap; 
+  
+  z->digits = malloc(
+  sizeof(digit_t) * z->cap); 
+
+  size_t sz = x->size;
+  
+  wide_t sub = 0, borrow = 0;
+  digit_t xi, yi;
+  size_t i;
+  for(i=0; i< sz; i++){
+    xi = x->digits[i];
+    yi = (i < y->size)? y->digits[i]: 0;
+
+    sub = xi + BASE - yi - borrow;
+    z->digits[i] = sub % BASE;
+    borrow = (sub < BASE);
+  }
+  z->size = sz;
+  return z;
 }
 
 bool eq(BigInt* x, BigInt* y){

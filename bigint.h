@@ -4,6 +4,7 @@
 #include "stddef.h"
 #include "stdbool.h"
 #define BASE 1000000000 // 10^9 BASE
+#define DIG_LEN 9
 typedef uint32_t digit_t;
 typedef uint64_t wide_t; // Used for Operations
 
