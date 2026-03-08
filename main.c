@@ -20,7 +20,7 @@ int main()
   BigInt* z = addn(x, y); printf(" ");
   printBigInt(x); printf("\n+");
   printBigInt(y); printf("\n");
-  printf("---------------------\n");
+  printf("------------------\n");
   printBigInt(z); printf("\n");
   printf("x > y ? %d\n", gt(x,y));
   printf("x = y ? %d\n", eq(x,y));

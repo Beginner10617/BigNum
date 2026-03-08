@@ -78,6 +78,7 @@ void printBigInt(BigInt* x){
     printf("%u", x->digits[i]);
     if(i==0) break;
   }
+  printf("%u", x->digits[0]);
 }
 
 // BigInt Operations
@@ -95,19 +96,16 @@ BigInt* addn(BigInt* x, BigInt* y){
   if(sz < y->size) sz = y->size;
   
   wide_t sum = 0, carry = 0;
+  digit_t xi, yi;
   size_t i;
   for(i=0; i<sz; i++){
-    sum = carry;
-
-    if(y->size > i){
-      sum += y->digits[i];
-    }
-    if(x->size > i){
-      sum += x->digits[i];
-    }
-    
-    z->digits[i] = sum % BASE;
+    xi= (i < x->size)? x->digits[i]:0;
+    yi= (i < y->size)? y->digits[i]:0;
+    sum = xi + yi + carry;
+    //printf("%llu %llu %llu %llu\n",
+    //xi, yi, carry, sum);
     carry = sum / BASE;
+    z->digits[i]= sum%BASE;
   }
   if(carry){
     z->digits[i] = carry;
@@ -115,6 +113,17 @@ BigInt* addn(BigInt* x, BigInt* y){
   }
   z->size = i;
   return z;
+}
+
+BigInt* subn(BigInt* x, BigInt* y){
+  if(lt(x, y)){
+    printf(ERROR 
+    "Negative numbers not allowed\n"
+    "Use a custom wrapper to incorporate them\n"
+      COLOR_RESET);
+    exit(EXIT_FAILURE);
+  }
+  return NULL;
 }
 
 bool eq(BigInt* x, BigInt* y){
@@ -156,6 +165,20 @@ bool gt(BigInt* x, BigInt* y){
   return false;
 }
 
+bool geq(BigInt* x, BigInt* y){
+  if(x->size > y->size) return true;
+  if(x->size < y->size) return false;
+  for(size_t i=x->size-1;
+  i>=0; i--){
+    if(x->digits[i] < y->digits[i])
+      return false;
+    if(x->digits[i] > y->digits[i])
+      return true;
+    if(i==0) break;
+  }
+  return true;
+}
+
 bool leq(BigInt* x, BigInt* y){
   if(x->size < y->size) return true;
   if(x->size > y->size) return false;
@@ -170,16 +193,3 @@ bool leq(BigInt* x, BigInt* y){
   return true;
 }
 
-bool geq(BigInt* x, BigInt* y){
-  if(x->size > y->size) return true;
-  if(x->size < y->size) return false;
-  for(size_t i=x->size-1;
-  i>=0; i--){
-    if(x->digits[i] < y->digits[i])
-      return false;
-    if(x->digits[i] > y->digits[i])
-      return true;
-    if(i==0) break;
-  }
-  return true;
-}
