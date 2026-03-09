@@ -19,6 +19,7 @@ typedef struct{
 // Constructor
 BigInt* creatBigInt(digit_t* digits, size_t len);
 BigInt* intToBigInt(int x);
+BigInt* copy(BigInt* x);
 
 // Display on screen
 void printBigInt(BigInt* x);

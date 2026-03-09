@@ -60,6 +60,18 @@ BigInt* intToBigInt(int x){
   return out;
 }
 
+BigInt* copy(BigInt* x){
+  BigInt* out = malloc(
+    sizeof(BigInt) );
+  out->cap = x->cap; 
+  out->size = x->size;
+  out->digits = malloc(
+    sizeof(digit_t) * out->cap);
+  for(size_t i=0; i<out->size; i++)
+    out->digits[i] = x->digits[i];
+  return out;
+}
+
 // BigInt Destructors
 void freeBigInt(BigInt** x){
   if(x && *x){
@@ -187,7 +199,45 @@ BigInt* mult(BigInt* x, BigInt* y){
 
   return z;
 }
+/*
+BigInt* divn(BigInt* x, BigInt* y){
+  BigInt* zero = intToBigInt(0);
+  assert(gt(y, zero));
+  if ( lt(x, y) ){
+    return zero;
+  }
 
+  BigInt* z = malloc(sizeof(BigInt));
+  z->cap = x->cap - y->cap + 1;
+
+  
+  z->digits = malloc(
+  sizeof(digit_t) * z->cap); 
+  z->size = 0;
+  for(size_t i=0; i<z->cap; i++)
+    z->digits[i] = 0;
+
+  wide_t tmp, carry=0, xi, yj;
+  size_t i, j;
+  for(i=0; i<x->size; i++){
+    carry = 0;
+    xi = x->digits[i];
+
+    for(j=0; j<y->size; j++){
+      yj = y->digits[j];
+
+      tmp = z->digits[i+j] + xi * yj + carry;
+      z->digits[i+j] = tmp % BASE;
+      carry = tmp / BASE;
+    }
+    z->digits[i + y->size] += carry;
+    z->size = (carry? 
+      i+y->size+1 : i+y->size);
+  }
+
+  return z;
+}
+*/
 bool eq(BigInt* x, BigInt* y){
   if(x->size != y->size) return false;
   for(size_t i=0;
