@@ -126,11 +126,11 @@ BigInt* addn(BigInt* x, BigInt* y){
 
 BigInt* subn(BigInt* x, BigInt* y){
   if(lt(x, y)){
-    printf(ERROR 
-    "Negative numbers not allowed\n"
+    printf(WARNING 
+    "Negative numbers not implemented\n"
     "Use a custom wrapper to incorporate them\n"
       COLOR_RESET);
-    exit(EXIT_FAILURE);
+  //  exit(EXIT_FAILURE);
   }
   
   BigInt* z = malloc(sizeof(BigInt));
@@ -154,6 +154,37 @@ BigInt* subn(BigInt* x, BigInt* y){
     borrow = (sub < BASE);
   }
   z->size = sz;
+  return z;
+}
+
+BigInt* mult(BigInt* x, BigInt* y){
+  BigInt* z = malloc(sizeof(BigInt));
+  z->cap = x->cap + y->cap; 
+  
+  z->digits = malloc(
+  sizeof(digit_t) * z->cap); 
+  z->size = 0;
+  for(size_t i=0; i<z->cap; i++)
+    z->digits[i] = 0;
+
+  wide_t tmp, carry=0, xi, yj;
+  size_t i, j;
+  for(i=0; i<x->size; i++){
+    carry = 0;
+    xi = x->digits[i];
+
+    for(j=0; j<y->size; j++){
+      yj = y->digits[j];
+
+      tmp = z->digits[i+j] + xi * yj + carry;
+      z->digits[i+j] = tmp % BASE;
+      carry = tmp / BASE;
+    }
+    z->digits[i + y->size] += carry;
+    z->size = (carry? 
+      i+y->size+1 : i+y->size);
+  }
+
   return z;
 }
 

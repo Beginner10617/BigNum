@@ -19,6 +19,7 @@ int main()
   BigInt* y = creatBigInt(digy, 2);
   BigInt* z1 = addn(x, y); 
   BigInt* z2 = subn(x, y);
+  BigInt* z3 = mult(x, y);
   printf(" ");
   printBigInt(x); printf("\n+");
   printBigInt(y); printf("\n");
@@ -27,7 +28,11 @@ int main()
   printBigInt(x); printf("\n-");
   printBigInt(y); printf("\n");
   printf("------------------\n");
-  printBigInt(z2); printf("\n");
+  printBigInt(z2); printf("\n\n ");
+  printBigInt(x); printf("\nx");
+  printBigInt(y); printf("\n");
+  printf("------------------\n");
+  printBigInt(z3); printf("\n\n");
 
   return 0;
 }
