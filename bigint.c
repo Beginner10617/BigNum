@@ -199,7 +199,7 @@ BigInt* mult(BigInt* x, BigInt* y){
 
   return z;
 }
-/*
+
 BigInt* divn(BigInt* x, BigInt* y){
   BigInt* zero = intToBigInt(0);
   assert(gt(y, zero));
@@ -209,13 +209,13 @@ BigInt* divn(BigInt* x, BigInt* y){
 
   BigInt* z = malloc(sizeof(BigInt));
   z->cap = x->cap - y->cap + 1;
-
+  BigInt* r = copy(x);
   
   z->digits = malloc(
   sizeof(digit_t) * z->cap); 
   z->size = 0;
-  for(size_t i=0; i<z->cap; i++)
-    z->digits[i] = 0;
+  //for(size_t i=0; i<z->cap; i++)
+  //  z->digits[i] = 0;
 
   wide_t tmp, carry=0, xi, yj;
   size_t i, j;
@@ -237,7 +237,7 @@ BigInt* divn(BigInt* x, BigInt* y){
 
   return z;
 }
-*/
+
 bool eq(BigInt* x, BigInt* y){
   if(x->size != y->size) return false;
   for(size_t i=0;
