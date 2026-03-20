@@ -29,11 +29,13 @@ BigInt *addn(BigInt *x, BigInt *y);
 BigInt *subn(BigInt *x, BigInt *y);
 BigInt *mult(BigInt *x, BigInt *y);
 BigInt *divn(BigInt *x, BigInt *y);
+BigInt *mod(BigInt *x, BigInt *y);
 bool eq(BigInt *x, BigInt *y);
 bool lt(BigInt *x, BigInt *y);
 bool gt(BigInt *x, BigInt *y);
 bool geq(BigInt *x, BigInt *y);
 bool leq(BigInt *x, BigInt *y);
+void divmod(BigInt *x, BigInt *y, BigInt **quot, BigInt **rem);
 
 // helper functions
 BigInt *mult_digit(BigInt *x, digit_t y);

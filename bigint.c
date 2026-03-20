@@ -243,12 +243,16 @@ BigInt *mult_digit(BigInt *x, digit_t y) {
   return z;
 }
 
-BigInt *divn(BigInt *x, BigInt *y) {
+void divmod(BigInt *x, BigInt *y, BigInt **quot, BigInt **rem) {
   BigInt *zero = intToBigInt(0);
   assert(gt(y, zero));
 
   if (lt(x, y)) {
-    return zero;
+    if (quot)
+      *quot = zero;
+    if (rem)
+      *rem = x;
+    return;
   }
   BigInt *z = malloc(sizeof(BigInt));
   z->cap = x->size - y->size + 1;
@@ -284,7 +288,21 @@ BigInt *divn(BigInt *x, BigInt *y) {
   while (z->size > 1 && z->digits[z->size - 1] == 0) {
     z->size--;
   }
+  if (rem)
+    *rem = r;
+  if (quot)
+    *quot = z;
+}
 
+BigInt *divn(BigInt *x, BigInt *y) {
+  BigInt *z;
+  divmod(x, y, &z, NULL);
+  return z;
+}
+
+BigInt *mod(BigInt *x, BigInt *y) {
+  BigInt *z;
+  divmod(x, y, NULL, &z);
   return z;
 }
 
