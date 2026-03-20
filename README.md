@@ -59,7 +59,6 @@ Run the executable:
 - Optimize memory usage (reduce allocations, introduce in-place computations)
 - Implement faster algorithms (Karatsuba multiplication, long division optimizations)
 - Add support for negative numbers
-- Improve API ergonomics (in-place operations)
 
 ---
 ## Status
